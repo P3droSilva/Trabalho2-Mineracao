@@ -1,0 +1,59 @@
+'''
+y = newDf["TIPO"]
+# Verificando o balanceamento das classes
+print("Classes pré balanceamento:", Counter(y))
+
+# Balanceando as classes
+# Filtrando linhas com as classes anteriores
+dfClassesAnteriores = newDf[newDf["TIPO"] != "?"]
+
+print(dfClassesAnteriores)
+
+# Separando as features e o target das classes anteriores
+x = dfClassesAnteriores[["P/VP", "DY (12M) MÉDIA (%)", "QUANT. ATIVOS", "NUM. COTISTAS"]]
+y = dfClassesAnteriores["TIPO"]
+
+# Convertendo DataFrames para matrizes NumPy
+x = x.values
+y = y.values
+
+# Aplicando SMOTE apenas nas classes anteriores
+smote = SMOTE(random_state=42)
+x_resampled, y_resampled = smote.fit_resample(x, y)
+
+# Verificando o balanceamento das classes após o SMOTE
+print("Classes após o balanceamento:", Counter(y_resampled))
+'''
+
+
+
+    IMPORTANTE:::::!!!!!!!!!!!!!!!!!!!!
+
+
+y = newDf["TIPO"]
+# Verificando o balanceamento das classes
+print("Classes pré balanceamento:", Counter(y))
+
+# Balanceando as classes
+
+# Filtrando as amostras da classe Tijolo
+dfPredict = newDf[newDf["TIPO"] != "?"]
+
+print(dfPredict)
+
+x = dfPredict[["P/VP", "DY (12M) MÉDIA (%)", "QUANT. ATIVOS", "NUM. COTISTAS"]]
+y = dfPredict["TIPO"]
+
+# Convertendo DataFrames para matrizes NumPy
+x = x.values
+y = y.values
+
+print(int(len(y[y == "TIJOLO"]) / 2))
+
+# Reduzindo pela metade a quantidade de amostras da classe Tijolo (undersampling)
+rus = RandomUnderSampler(sampling_strategy={"TIJOLO": int(len(y[y == "TIJOLO"]) / 2)})
+x_resampled, y_resampled = rus.fit_resample(x, y)
+
+# Verificando a contagem de classes após o balanceamento
+print("Contagem de classes após o balanceamento:", Counter(y_resampled))
+
